@@ -1,17 +1,14 @@
 import { renderThumbnails } from './creating-thumbnails.js';
+const filtersContainerElement = document.querySelector('.img-filters');
 
 const RANDOM_PICTURE_LIMIT = 10;
-
 const Filter = {
   DEFAULT: 'filter-default',
   RANDOM: 'filter-random',
   DISCUSSED: 'filter-discussed',
 };
-
 let filter = Filter.DEFAULT;
 let pictures = [];
-
-const filtersContainer = document.querySelector('.img-filters');
 
 const getFilterPictures = () => {
   switch (filter) {
@@ -28,7 +25,7 @@ const getFilterPictures = () => {
   }
 };
 
-filtersContainer.addEventListener('click', (e) => {
+filtersContainerElement.addEventListener('click', (e) => {
   if (!e.target.matches('button')) {
     return;
   }
@@ -38,7 +35,7 @@ filtersContainer.addEventListener('click', (e) => {
   }
 
   const activeBtn = e.target;
-  filtersContainer
+  filtersContainerElement
     .querySelector('.img-filters__button--active')
     .classList.remove('img-filters__button--active');
   activeBtn.classList.add('img-filters__button--active');
@@ -47,7 +44,7 @@ filtersContainer.addEventListener('click', (e) => {
 });
 
 const initFilters = (picturesData) => {
-  filtersContainer.classList.remove('img-filters--inactive');
+  filtersContainerElement.classList.remove('img-filters--inactive');
   pictures = [...picturesData];
 };
 

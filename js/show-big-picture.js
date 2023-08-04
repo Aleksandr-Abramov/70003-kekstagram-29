@@ -1,12 +1,10 @@
 import { createHtmlElement } from '../utils/create-html-element.js';
 
-const COMMENT_PER_PORTION = 5;
-let commentShow = 0;
-
 const bigPictureElement = document.querySelector('.big-picture');
 const commentCountElement = bigPictureElement.querySelector(
-  '.social__comment-count' //счетчик
+  '.comment-show-count' //счетчик
 );
+const commentCountMessageElement = document.querySelector('.comments-count');
 const commentListElement = bigPictureElement.querySelector('.social__comments');
 const commentLoaderElement =
   bigPictureElement.querySelector('.comments-loader'); //кнопка
@@ -15,9 +13,12 @@ const cancelButtonElement = bigPictureElement.querySelector(
   '.big-picture__cancel'
 );
 
+const COMMENT_PER_PORTION = 5;
+let commentShow = 0;
+let dataComments;
+
 const renderComments = (comments) => {
   commentShow += COMMENT_PER_PORTION;
-
   if (commentShow >= comments.length) {
     commentLoaderElement.classList.add('hidden');
     commentShow = comments.length;
@@ -30,8 +31,9 @@ const renderComments = (comments) => {
     const comment = createHtmlElement(item);
     fragment.append(comment);
   });
-  commentCountElement.innerHTML = `${commentShow} из <span class="comments-count">${comments.length}</span>`;
 
+  commentCountElement.textContent = commentShow;
+  commentCountMessageElement.textContent = comments.length;
   commentListElement.innerHTML = '';
   commentListElement.append(fragment);
 };
@@ -65,14 +67,12 @@ const renderPictureDetails = ({ url, likes, description }) => {
 const showBigPicture = (data) => {
   bigPictureElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
-
+  dataComments = data.comments;
   document.addEventListener('keydown', onDocumentKeydown);
   renderPictureDetails(data);
-  commentLoaderElement.addEventListener('click', () =>
-    renderComments(data.comments)
-  );
   renderComments(data.comments);
 };
+commentLoaderElement.addEventListener('click', () => renderComments(dataComments));
 
 cancelButtonElement.addEventListener('click', onCancelButtonClick);
 

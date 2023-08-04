@@ -18,12 +18,6 @@ const createComments = () => ({
   id: Math.random(),
   avatar: `../img/avatar-${getRandomInteger(1, 6)}.svg`,
   message: getRandomComments(),
-  // message:
-  //   getRandomInteger(0, 1) === 1
-  //     ? `${messageComments[getRandomInteger(0, messageComments.length - 1)]}`
-  //     : `${messageComments[getRandomInteger(0, messageComments.length - 1)]} ${
-  //         messageComments[getRandomInteger(0, messageComments.length - 1)]
-  //       }`,
   name: nameData[(0, getRandomInteger(0, nameData.length - 1))],
 });
 

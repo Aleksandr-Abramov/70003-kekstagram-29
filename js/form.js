@@ -3,7 +3,10 @@ import './filters.js';
 import './avatar.js';
 import { resetScale } from './zoom.js';
 import { sendData } from './api.js';
-import { showFormSubmissionSuccessMessage, showFormSubmissionErrorMessage } from '../utils/show-alert.js';
+import {
+  showFormSubmissionSuccessMessage,
+  showFormSubmissionErrorMessage,
+} from '../utils/show-alert.js';
 
 const overlayElement = document.querySelector('.img-upload__overlay');
 const uploadBtnElement = document.querySelector('.img-upload__input');
@@ -26,6 +29,7 @@ const pristine = new Pristine(uploadFormElement, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
 });
+
 const normalizeTags = (tagString) =>
   tagString
     .trim()
@@ -69,17 +73,19 @@ pristine.addValidator(
 
 const onShowFormModal = () => {
   overlayElement.classList.remove('hidden');
+
   bodyElement.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
 const onHideFormModal = () => {
+  uploadFormElement.reset();
   resetScale();
   uploadFormElement.reset();
-  pristine.reset();
   overlayElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
+  pristine.reset();
 };
 
 const isInputFucus = () =>
@@ -100,12 +106,15 @@ uploadFormElement.addEventListener('submit', (event) => {
   if (isValid) {
     btnSub.setAttribute('disabled', 'disabled');
     const formData = new FormData(uploadFormElement);
-    sendData(formData).then(() => {
-      onHideFormModal();
-      showFormSubmissionSuccessMessage();
-    }).catch(() => {
-      showFormSubmissionErrorMessage();
-    }).finally(()=> btnSub.removeAttribute('disabled'));
+    sendData(formData)
+      .then(() => {
+        showFormSubmissionSuccessMessage();
+        onHideFormModal();
+      })
+      .catch(() => {
+        showFormSubmissionErrorMessage();
+      })
+      .finally(() => btnSub.removeAttribute('disabled'));
   }
 });
 
